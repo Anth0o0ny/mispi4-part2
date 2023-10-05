@@ -191,7 +191,7 @@ public class JavaScript {
             }
         }
 
-
+        private final long NUMBER_OF_ERROR_MESSAGES = 30000;
         private void handleScriptException( Exception e, String badScript ) {
             final String errorMessage = badScript + " failed: " + e;
             if (!(e instanceof EcmaError) && !(e instanceof EvaluatorException)) {
@@ -201,6 +201,9 @@ public class JavaScript {
                 e.printStackTrace();
                 throw new ScriptException( errorMessage );
             } else {
+                while (_errorMessages.size() >= NUMBER_OF_ERROR_MESSAGES) {
+                    _errorMessages.remove(0);
+                }
                 _errorMessages.add( errorMessage );
             }
         }
